@@ -24,6 +24,9 @@ class Navigation extends React.Component {
                 <Nav.Link href="/addInfo">
                   <Translate content="navigation.project" />
                 </Nav.Link>
+                <Nav.Link href="/login">
+                  Login
+                </Nav.Link>
               </Col>
             </Row>
           </Nav>
