@@ -1,133 +1,137 @@
-import React, { Component } from 'react';
+import { React, Component } from 'react'
 import '../Style/Login.css';
-import axios from "axios";
-import { Form, Icon, Input, Button, Checkbox, message } from "antd";
-import loginImg from './login.png'
-const FormItem = Form.Item;
-
-class NormalLoginForm extends Component {
-
-    isLoggedIn = () => {
-        // window.loggedUsername should be defined by UI page / jelly script
-        // if it's 'guest' that means there is no active user session
-        if (window.loggedUsername === 'guest') {
-            return false;
-        } else {
-            return true; // set it to false for local development to prevent passing through
-        }
-    }
-
-    handleSubmit = e => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                var details = {
-                    sysparm_type: "login",
-                    "ni.nolog.user_password": true,
-                    remember_me: values.remember,
-                    user_name: values.userName,
-                    user_password: values.password,
-                    get_redirect_url: true,
-                    sysparm_goto_url: "navpage.do"
-                };
-
-                var formBody = [];
-                for (var property in details) {
-                    var encodedKey = encodeURIComponent(property);
-                    var encodedValue = encodeURIComponent(details[property]);
-                    formBody.push(encodedKey + "=" + encodedValue);
-                }
-                formBody = formBody.join("&");
-                axios({
-                    method: "post",
-                    url:
-                        "angular.do?sysparm_type=view_form.login",
-                    data: formBody,
-                    config: {
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" }
-                    }
-                })
-                    .then(function (response) {
-                        if (response.data.status === 'error') {
-                            message.error(response.data.message)
-                        } else if (response.data.status === 'success') {
-                            message.success(response.data.message)
-                            setTimeout(() => { window.location = window.mainAppPage; }, 500);
-                        } else {
-                            message.warning('Unknown response status' + response.data.message)
-                        }
-                    })
-                    .catch(function (response) {
-                        message.error('Network error. Cannot log in.')
-                    });
-            }
-        });
-    };
-
-    render() {
-        const { getFieldDecorator } = this.props.form;
-        if (this.isLoggedIn()) {
-            window.location = window.mainAppPage;
-        }
-        return (
-            <div>
-                <div className={this.isLoggedIn() ? ' ' : ' hidden'}>
-                    Successfully logged in...
-                </div>
-                <div className={"lContainer" + (this.isLoggedIn() ? ' hidden' : ' ')}>
-                    <div className="lItem">
-                        <div className="loginImage">
-                            <img src={loginImg} width="300" style={{ position: 'relative' }} alt="login" />
-                        </div>
-                        <div className="loginForm">
-                            <h2>Login</h2>
-                            <Form onSubmit={this.handleSubmit} className="login-form">
-                                <FormItem>
-                                    {getFieldDecorator("userName", {
-                                        rules: [{ required: true, message: "Please enter your username" }]
-                                    })(
-                                        <Input
-                                            prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-                                            placeholder="Username"
-                                        />
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    {getFieldDecorator("password", {
-                                        rules: [{ required: true, message: "Please enter your Password" }]
-                                    })(
-                                        <Input
-                                            prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-                                            type="password"
-                                            placeholder="Password"
-                                        />
-                                    )}
-                                </FormItem>
-                                <FormItem>
-                                    {getFieldDecorator("remember", {
-                                        valuePropName: "checked",
-                                        initialValue: true
-                                    })(<Checkbox>Remember me</Checkbox>)}
-                                    <Button
-                                        type="primary"
-                                        htmlType="submit"
-                                        className="login-form-button"
-                                    >
-                                        Log in
-                                    </Button>
-                                </FormItem>
-                            </Form>
-                        </div>
-                    </div>
-                    <div className="footer">
-                        <a href="" target="_blank" rel="noopener noreferrer" className="footerLink">Powered by React</a>
-                    </div>
-                </div>
-            </div>
-        );
-    }
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.min.js';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
+const defaultState = {
+    email: null,
+    password: null,
+    nameError: null,
+    emailError: null,
+    passwordError: null,
+    isLogIn: null,
 }
 
-const App = Form.create()(NormalLoginForm);
+class Login extends Component {
+    constructor() {
+        super();
+        this.state = defaultState;
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+    handleInputChange(event) {
+        const target = event.target;
+        var value = target.value;
+        const name = target.name;
+        this.setState({
+            [name]: value
+        });
+    }
+    validate() {
+        let emailError = "";
+        let passwordError = "";
+        console.log(this.state.email, this.state.password);
 
-export default App;
+        const reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/;
+        if (!this.state.email || reg.test(this.state.email) === false) {
+            emailError = "Email Field is Invalid ";
+        }
+        if (!this.state.password) {
+            passwordError = "Password field is required";
+        }
+        if (emailError || passwordError) {
+            this.setState({ emailError, passwordError });
+            return false;
+        }
+        return true;
+    }
+
+    submit() {
+        if (this.validate()) {
+            this.setState({ isLogIn: true });
+            console.warn(this.state);
+            //this.setState(defaultState);
+
+        }
+        else {
+            console.log("Wrong email password");
+        }
+    }
+    // componentDidMount() {
+
+    //   fetch("http://localhost:8080/login", {
+    //     method: "POST",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       email: this.state.email,
+    //       password: this.state.password,
+    //     })
+    //   })
+    //     .then((res) => res.json())
+    //     .then((json) => {
+    //       this.setState({
+    //         items: json,
+    //         DataisLoaded: true
+    //       });
+    //     })
+
+    // }
+    render() {
+        return (
+            <div className="App" >
+                <div className="container-fluid ps-md-0 bg-image">
+                    <div class="row g-0">
+                        <div className="login d-flex align-items-center py-5">
+                            <div className="container">
+                                <div className="row">
+                                    <div className="col-sm-10 col-md-6 col-lg-4 mx-auto wrap-box">
+                                        <h3 className="login-heading mb-4 text-center">Welcome back!</h3>
+
+                                        <form>
+                                            <div className="form-floating mb-3">
+                                                <input type="email" className={"form-control " + (this.state.emailError ? 'invalid' : '')} id="floatingInput" name='email' placeholder="name@example.com" value={this.state.email} onChange={this.handleInputChange} />
+                                                <label for="floatingInput" className="row-header">Email address</label>
+                                                <span className="text-danger">{this.state.emailError}</span>
+                                            </div>
+                                            <div className="form-floating mb-3">
+                                                <input type="password" className={"form-control " + (this.state.passwordError ? 'invalid' : '')} id="floatingPassword" name="password" placeholder="Password" value={this.state.password} onChange={this.handleInputChange} />
+                                                <label htmlFor="floatingPassword" className="row-header">Password</label>
+                                                <span className="text-danger">{this.state.passwordError}</span>
+                                            </div>
+
+                                            <div className="form-check mb-3">
+                                                <input className="form-check-input" type="checkbox" value="" id="rememberPasswordCheck" />
+                                                <label className="form-check-label" for="rememberPasswordCheck">
+                                                    Remember password
+                                                </label>
+                                            </div>
+
+                                            <div className="d-grid">
+                                                <button className="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="button" onClick={() => this.submit()}>Sign in</button>
+                                                <div className="text-center">
+                                                    <a href="#" className="small">Forgot password?</a>
+                                                </div>
+                                                <div className="text-center small">
+                                                    Don't have an account? <a href="#">Sign up</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div >
+
+        )
+    }
+}
+export default Login;

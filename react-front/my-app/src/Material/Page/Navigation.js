@@ -15,14 +15,17 @@ class Navigation extends React.Component {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="navigation">
             <Row>
-              <Col xl={12}>
+              <Col xl={12} style={{ padding: 0 }}>
                 <Nav.Link href="/">
                   <p className="text-semi-bold first-element">
                     <Translate content="navigation.title" />
                   </p>
                 </Nav.Link>
-                <Nav.Link href="/addInfo">
-                  <Translate content="navigation.project" />
+                <Nav.Link href="/insertData">
+                  <span> Insert Data </span>
+                </Nav.Link>
+                <Nav.Link href="/chart">
+                  <span> Chart</span>
                 </Nav.Link>
               </Col>
             </Row>

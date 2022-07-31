@@ -1,86 +1,52 @@
-.App {
-  text-align: center;
-}
-body {
-  margin: 0;
+* {
   padding: 0;
-  font-family: sans-serif;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.lContainer {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 38px;
-  justify-items: center;
-  align-items: center;
-  grid-template-rows: 100vh;
-  background-color: #f6f6f6;
+.bg-image {
+  background-image: url("https://images.theconversation.com/files/128248/original/image-20160627-28391-1f87m7g.jpeg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=1200.0&fit=crop");
+  background-size: cover;
+  background-position: center;
+  filter: blur(0px);
 }
 
-.spanLink {
-  color: #1890ff;
-  background-color: transparent;
-  text-decoration: none;
-  outline: none;
-  cursor: pointer;
-  transition: color 0.3s;
+.container {
+  margin: 0 auto;
 }
 
-.footer {
-  color: rgb(206, 212, 217);
-  text-align: center;
-  font-size: 12px;
-  padding: 1rem;
-  user-select: none;
-  margin-top: -45px;
+.wrap-box {
+  backdrop-filter: none;
+  border-radius: 15px;
+  padding: 30px 20px;
+  margin: auto;
+  background: rgba(0, 0, 0, 0.13);
+  backdrop-filter: blur(4px);
+  text-shadow: 2px rgb(231, 231, 231);
+  color: white;
 }
 
-.App-title {
-  font-size: 1.5em;
+.login {
+  min-height: 100vh;
 }
 
-.App-intro {
-  font-size: large;
+.login-heading {
+  font-weight: 300;
+}
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+  border-radius: 20px !important;
+}
+.invalid {
+  border-color: red !important;
 }
 
-.login-form {
-  width: 300px;
-}
-.login-form-forgot {
-  float: right;
-}
-.login-form-button {
-  width: 100%;
+.form-floating > .form-control {
+  border-radius: 20px !important;
 }
 
-.hidden {
-  display: none;
-}
-
-.lItem {
-  width: 300px;
-}
-
-.loginForm {
-  background-color: white;
-  padding-left: 30px;
-  padding-top: 20px;
-  margin-top: -60px;
-  margin-left: -30px;
-  margin-right: -30px;
-  border-radius: 8px;
-  border: 1px solid #d8d8da;
-}
-.loginImage {
-  margin-top: -160px;
-  margin-bottom: 70px;
-}
-
-tbody {
-  font-size: 14px;
-}
-
-.footerLink {
-  text-decoration: none;
-  color: rgb(206, 212, 217);
+.row-header {
+  color: black;
 }

@@ -13,13 +13,20 @@ function Header() {
     <div className="content">
       <Container fluid>
         <Row>
-          <Col xl={1}></Col>
-          <Col xl={1}>
-            <img className="logo" src={logo} alt="logo" />
-          </Col>
+          <Col xl={2}></Col>
           <Col xl={6}>
             <p className="name">
               <Translate content="header.name" />
+              <Button
+                style={{
+                  color: "blue",
+                  backgroundColor: "white",
+                  border: "0",
+                  paddingLeft: "0",
+                }}
+              >
+                FR
+              </Button>
               <Button
                 style={{
                   color: "black",
@@ -31,16 +38,6 @@ function Header() {
                 }}
               >
                 EN |
-              </Button>
-              <Button
-                style={{
-                  color: "blue",
-                  backgroundColor: "white",
-                  border: "0",
-                  paddingLeft: "0",
-                }}
-              >
-                FR
               </Button>
             </p>
           </Col>

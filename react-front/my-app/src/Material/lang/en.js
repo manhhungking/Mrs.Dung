@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   header: {
-    name: "Project Information Management",
+    name: "House price management",
   },
   navigation: {
     title: "Info Table",
@@ -32,12 +32,12 @@ export default {
     cancel: "Cancel",
   },
   projectList: {
-    title: "Project List",
-    number: "Number",
-    name: "Name",
-    status: "Status",
-    customer: "Customer",
-    startDate: "Start Date",
-    delete: "Delete",
+    title: "House price table",
+    number: "Loại hình",
+    name: "Chủ sở hữu",
+    status: "Giá tiền",
+    customer: "Địa chỉ",
+    startDate: "Chứng nhận sở hữu",
+    delete: "Xóa",
   },
 };
