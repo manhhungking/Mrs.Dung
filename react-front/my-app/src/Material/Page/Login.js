@@ -86,9 +86,8 @@ class Login extends Component {
     render() {
         return (
             <div className="App" >
-                <div className="container-fluid ps-md-0">
-                    <div className="row g-0">
-
+                <div className="container-fluid ps-md-0 bg-image">
+                    <div class="row g-0">
                         <div className="login d-flex align-items-center py-5">
                             <div className="container">
                                 <div className="row">
@@ -98,12 +97,12 @@ class Login extends Component {
                                         <form>
                                             <div className="form-floating mb-3">
                                                 <input type="email" className={"form-control " + (this.state.emailError ? 'invalid' : '')} id="floatingInput" name='email' placeholder="name@example.com" value={this.state.email} onChange={this.handleInputChange} />
-                                                <label for="floatingInput">Email address</label>
+                                                <label for="floatingInput" className="row-header">Email address</label>
                                                 <span className="text-danger">{this.state.emailError}</span>
                                             </div>
                                             <div className="form-floating mb-3">
                                                 <input type="password" className={"form-control " + (this.state.passwordError ? 'invalid' : '')} id="floatingPassword" name="password" placeholder="Password" value={this.state.password} onChange={this.handleInputChange} />
-                                                <label htmlFor="floatingPassword">Password</label>
+                                                <label htmlFor="floatingPassword" className="row-header">Password</label>
                                                 <span className="text-danger">{this.state.passwordError}</span>
                                             </div>
 
@@ -130,7 +129,7 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
 
         )
     }

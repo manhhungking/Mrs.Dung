@@ -1,8 +1,7 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useContext } from "react";
 import "./App.css";
 import MainPage from "./Page/MainPage";
 import en from "./lang/en";
-
 export const langContext = createContext({});
 
 function App() {

@@ -15,7 +15,7 @@ class Navigation extends React.Component {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="navigation">
             <Row>
-              <Col xl={12}>
+              <Col xl={12} style={{ padding: 0 }}>
                 <Nav.Link href="/">
                   <p className="text-semi-bold first-element">
                     <Translate content="navigation.title" />
@@ -24,8 +24,8 @@ class Navigation extends React.Component {
                 <Nav.Link href="/addInfo">
                   <Translate content="navigation.project" />
                 </Nav.Link>
-                <Nav.Link href="/login">
-                  Login
+                <Nav.Link href="/insertData">
+                  Insert Data
                 </Nav.Link>
               </Col>
             </Row>
