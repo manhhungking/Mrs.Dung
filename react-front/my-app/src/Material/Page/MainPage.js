@@ -3,11 +3,11 @@ import { Container, Row, Col } from "react-bootstrap";
 import Header from "./Header";
 import Navigation from "./Navigation";
 import InfoTable from "./InfoTable";
-import AddInfo from "./AddInfo";
 import Login from "./Login";
 import Register from "./Register";
 import InsertData from "./InsertData";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Chart from "./Chart";
 
 function MainPage() {
 
@@ -21,6 +21,7 @@ function MainPage() {
               <Routes>
                 <Route path="/addInfo" element={<Header />} />
                 <Route path="/insertData" element={<Header />} />
+                <Route path="/chart" element={<Header />} />
                 <Route path="/" element={<Header />} />
               </Routes>
             </Col>
@@ -42,15 +43,15 @@ function MainPage() {
 
             <Col xl={2}>
               <Routes>
-                <Route path="/addInfo" element={<Navigation />} />
                 <Route path="/insertData" element={<Navigation />} />
+                <Route path="/chart" element={<Navigation />} />
                 <Route path="/" element={<Navigation />} />
               </Routes>
             </Col>
             <Col xl={10}>
               <Routes>
-                <Route path="/addInfo" element={<AddInfo />} />
                 <Route path="/insertData" element={<InsertData />} />
+                <Route path="/chart" element={<Chart />} />
                 <Route path="/" element={<InfoTable />} />
               </Routes>
             </Col>

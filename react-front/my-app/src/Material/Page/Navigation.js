@@ -21,11 +21,11 @@ class Navigation extends React.Component {
                     <Translate content="navigation.title" />
                   </p>
                 </Nav.Link>
-                <Nav.Link href="/addInfo">
-                  <Translate content="navigation.project" />
-                </Nav.Link>
                 <Nav.Link href="/insertData">
-                  Insert Data
+                  <span> Insert Data </span>
+                </Nav.Link>
+                <Nav.Link href="/chart">
+                  <span> Chart</span>
                 </Nav.Link>
               </Col>
             </Row>
