@@ -2,12 +2,7 @@ import { React, Component } from 'react'
 import '../Style/Login.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+
 const defaultState = {
     email: null,
     password: null,
