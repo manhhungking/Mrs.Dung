@@ -9,7 +9,7 @@ from House.serializers import HouseSerializer
 
 
 @csrf_exempt
-def houseApi(request, id=0):
+def houseApi(request):
     if request.method == 'GET':
         houses = Houses.objects.all()
         houses_serializer = HouseSerializer(houses, many=True)
