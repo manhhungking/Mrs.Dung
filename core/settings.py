@@ -65,6 +65,7 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
 )
 ROOT_URLCONF = 'core.urls'
+CORS_ORIGIN_ALLOW_ALL=True
 LOGIN_REDIRECT_URL = "home"  # Route defined in home/urls.py
 LOGOUT_REDIRECT_URL = "home"  # Route defined in home/urls.py
 TEMPLATE_DIR = os.path.join(
