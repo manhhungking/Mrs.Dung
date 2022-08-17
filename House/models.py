@@ -11,11 +11,6 @@ from django.db import models
 # Person for login
 
 
-class Person(models.Model):
-    email = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
-
-
 class Houses(models.Model):
     house_id = models.AutoField(primary_key=True, blank=True)
     LoaiHinh = models.CharField(max_length=100)

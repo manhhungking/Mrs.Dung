@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from House.models import Houses
+from house.models import Houses
 
 
 class HouseSerializer (serializers.ModelSerializer):

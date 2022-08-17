@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import "../Style/ProjectList.css";
+import "../Style/houseList.css";
 import "react-pagination-bar/dist/index.css";
 import { Button, Col, Form, FormCheck, Nav, Row, Table } from "react-bootstrap";
 import axios from "axios";
@@ -152,34 +152,51 @@ export default function InfoTable() {
   const { lang, setLang } = useContext(langContext);
 
   useEffect(() => {
-    // axios
-    //   .get(URLCollection.searchProject)
-    //   .then((res) => {
-    //     console.log(res);
-    //     setPosts(res.data);
-    //     setTempPosts(res.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    axios({
+      url: "http://127.0.0.1:8000/house/",
+      method: "GET"
+    })
+      .then((res) => {
+        console.log(res);
+        setPosts(res.data);
+        setTempPosts(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   console.log(posts);
   const pagePostsLimit = 8;
 
-  const handleFilter = () => {
+  const handleFilterByType = () => {
     const filterElementValue = document.getElementById("filterByType").value;
     if (filterElementValue !== "select type") {
-      const filtered = posts.filter((post) => post.type === filterElementValue);
+      const filtered = posts.filter(
+        (post) => post.LoaiHinh === filterElementValue
+      );
+      setPosts(filtered);
+    }
+  };
+
+  const handleFilterByLicense = () => {
+    const filterElementValue = document.getElementById("filterByLicense").value;
+    if (filterElementValue !== "select license") {
+      const filtered = posts.filter(
+        (post) => post.ChungNhanSoHuu === filterElementValue
+      );
       setPosts(filtered);
     }
   };
   const removeElementById = (id) => {
-    const postsAfterRemove = posts.filter((post) => post.id !== id);
+    const postsAfterRemove = posts.filter((post) => post.house_id !== id);
     setPosts(postsAfterRemove);
   };
   const removeElementsById = (ids) => {
-    const postsAfterRemove = posts.filter((post) => !ids.includes(post.id));
+    const postsAfterRemove = posts.filter(
+      (post) => !ids.includes(post.house_id)
+    );
     setPosts(postsAfterRemove);
+    setPostsDel([]);
   };
   const deleteBtn = (post) => {
     return (
@@ -193,7 +210,7 @@ export default function InfoTable() {
         onClick={() => {
           alert("You want to delete this row?");
           deleteProject(post);
-          removeElementById(post.id);
+          removeElementById(post.house_id);
         }}
       ></button>
     );
@@ -203,7 +220,17 @@ export default function InfoTable() {
     const owner = document.getElementById("filterByName").value;
     if (owner !== "") {
       const filteredPosts = posts.filter((post) =>
-        post.owner.toLowerCase().includes(owner.toLowerCase())
+        post.TacGia.toLowerCase().includes(owner.toLowerCase())
+      );
+      setPosts(filteredPosts);
+    }
+  };
+
+  const searchHouseByAddress = () => {
+    const address = document.getElementById("filterByAddress").value;
+    if (address !== "") {
+      const filteredPosts = posts.filter((post) =>
+        post.DiaChi.toLowerCase().includes(address.toLowerCase())
       );
       setPosts(filteredPosts);
     }
@@ -211,14 +238,14 @@ export default function InfoTable() {
 
   const checkedBoxCount = (post) => {
     const box = document.querySelectorAll(
-      ".project".concat(post.id.toString()).concat(" .form-check-input")
+      ".project".concat(post.house_id.toString()).concat(" .form-check-input")
     )[0];
     console.log(box);
     console.log(box.checked);
     if (box.checked) {
       setPostsDel([...postsDel, post]);
     } else {
-      setPostsDel(postsDel.filter((p) => p.id !== post.id));
+      setPostsDel(postsDel.filter((p) => p.house_id !== post.house_id));
     }
   };
 
@@ -240,9 +267,9 @@ export default function InfoTable() {
     setPosts([
       ...posts.sort(function (a, b) {
         if (arrow.className === "fa fa-angle-up") {
-          return a.type.localeCompare(b.type);
+          return a.LoaiHinh.localeCompare(b.LoaiHinh);
         } else {
-          return b.type.localeCompare(a.type);
+          return b.LoaiHinh.localeCompare(a.LoaiHinh);
         }
       }),
     ]);
@@ -251,7 +278,7 @@ export default function InfoTable() {
   return (
     <div>
       <h2 style={{ marginTop: "1em" }}>
-        <Translate content="projectList.title" />
+        <Translate content="houseList.title" />
       </h2>
       <hr />
       <div>
@@ -264,6 +291,7 @@ export default function InfoTable() {
                 placeholder={
                   lang === en ? "Chủ sở hữu" : "Numéro de projet, nom"
                 }
+                style={{ marginTop: "4px" }}
               />
             </Col>
             <Col sm="3">
@@ -272,6 +300,7 @@ export default function InfoTable() {
                 as="select"
                 id="filterByType"
                 defaultValue="select type"
+                style={{ marginTop: "4px" }}
               >
                 <option value="select type">
                   {lang === en ? "Loại hình" : "L'état du projet"}
@@ -290,7 +319,9 @@ export default function InfoTable() {
               value={lang === en ? "Search" : "Rechercher un projet"}
               onClick={() => {
                 searchHouseByOwner();
-                handleFilter();
+                searchHouseByAddress();
+                handleFilterByType();
+                handleFilterByLicense();
               }}
             ></Button>
             <Button
@@ -307,6 +338,33 @@ export default function InfoTable() {
               }}
             ></Button>
           </Form.Group>
+
+          <Form.Group as={Row} className="mb-3">
+            <Col sm="3">
+              <Form.Control
+                type="text"
+                id="filterByAddress"
+                placeholder={lang === en ? "Địa chỉ" : "Numéro de projet, nom"}
+              />
+            </Col>
+            <Col sm="3">
+              <Form.Control
+                type="text"
+                as="select"
+                id="filterByLicense"
+                defaultValue="select license"
+              >
+                <option value="select license">
+                  {lang === en ? "Chứng nhận sở hữu" : "L'état du projet"}
+                </option>
+                <option value="Đang chờ sổ">Đang chờ sổ</option>
+                <option value="Hợp đồng mua bán">Hợp đồng mua bán</option>
+                <option value="Vi bằng">Vi bằng</option>
+                <option value="Có Sổ đỏ">Sổ đỏ</option>
+                <option value="Hợp đồng Góp vốn">Hợp đồng Góp vốn</option>
+              </Form.Control>
+            </Col>
+          </Form.Group>
         </Form>
       </div>
       <div style={{ minHeight: "509px" }}>
@@ -315,7 +373,7 @@ export default function InfoTable() {
             <tr>
               <th> </th>
               <th>
-                <Translate content="projectList.number" />{" "}
+                <Translate content="houseList.LoaiHinh" />{" "}
                 <button
                   className="fa fa-angle-up"
                   id="arrow"
@@ -324,19 +382,25 @@ export default function InfoTable() {
                 ></button>
               </th>
               <th>
-                <Translate content="projectList.name" />
+                <Translate content="houseList.TacGia" />
               </th>
               <th>
-                <Translate content="projectList.status" />
+                <Translate content="houseList.SoDienThoai" />
               </th>
               <th>
-                <Translate content="projectList.customer" />
+                <Translate content="houseList.DienTich" />
               </th>
               <th>
-                <Translate content="projectList.startDate" />{" "}
+                <Translate content="houseList.Gia" />
               </th>
               <th>
-                <Translate content="projectList.delete" />
+                <Translate content="houseList.DiaChi" />
+              </th>
+              <th>
+                <Translate content="houseList.ChungNhanSoHuu" />{" "}
+              </th>
+              <th>
+                <Translate content="houseList.delete" />
               </th>
             </tr>
           </thead>
@@ -345,12 +409,12 @@ export default function InfoTable() {
               .slice(itemOffset, itemOffset + pagePostsLimit)
               .map((post) => {
                 return (
-                  <tr key={post.id}>
+                  <tr key={post.house_id}>
                     <td>
                       <Form>
                         <FormCheck
-                          className={"project".concat(post.id)}
-                          id={post.id}
+                          className={"project".concat(post.house_id)}
+                          id={post.house_id}
                           onClick={() => {
                             checkedBoxCount(post);
                           }}
@@ -358,14 +422,16 @@ export default function InfoTable() {
                       </Form>
                     </td>
                     <td>
-                      <Nav.Link href={`\\editProject\\${post.id}`}>
-                        {post.type}
+                      <Nav.Link href={`\\editProject\\${post.house_id}`}>
+                        {post.LoaiHinh}
                       </Nav.Link>
                     </td>
-                    <td>{post.owner}</td>
-                    <td>{post.price}</td>
-                    <td>{post.address}</td>
-                    <td>{post.license}</td>
+                    <td>{post.TacGia}</td>
+                    <td>{post.SoDienThoai}</td>
+                    <td>{post.DienTich}</td>
+                    <td>{post.Gia}</td>
+                    <td>{post.DiaChi}</td>
+                    <td>{post.ChungNhanSoHuu}</td>
                     <td>{deleteBtn(post)}</td>
                   </tr>
                 );
@@ -379,7 +445,7 @@ export default function InfoTable() {
                 {postsDel.length}{" "}
                 {lang === en ? "items selected" : "éléments sélectionnés"}
               </td>
-              <td colSpan="4" style={{ textAlign: "right", color: "red" }}>
+              <td colSpan="6" style={{ textAlign: "right", color: "red" }}>
                 <button
                   style={{
                     color: "red",
@@ -390,7 +456,7 @@ export default function InfoTable() {
                     let ids = [];
                     alert("You want to delete these rows?");
                     for (const project of postsDel) {
-                      ids.push(project.id);
+                      ids.push(project.house_id);
                       deleteProject(project);
                     }
                     removeElementsById(ids);

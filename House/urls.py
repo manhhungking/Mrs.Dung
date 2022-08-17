@@ -1,7 +1,6 @@
-from django.urls import re_path
-from House import views
-
+from django.urls import path
+from house import views
+# http://127.0.0.1:8000/house/
 urlpatterns = [
-    re_path(r'^house/$', views.houseApi),
-    re_path(r'^house/([0-9]+)$', views.houseApi),
+    path('house/', views.houseApi, name="houseData"),
 ]

@@ -4,15 +4,16 @@ from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 # Create your views here.
 
-from House.models import Houses
-from House.serializers import HouseSerializer
+from house.models import Houses
+from house.serializers import HouseSerializer
 
 
 @csrf_exempt
-def houseApi(request, id=0):
+def houseApi(request):
     if request.method == 'GET':
         houses = Houses.objects.all()
         houses_serializer = HouseSerializer(houses, many=True)
+
         return JsonResponse(houses_serializer.data, safe=False)
     elif request.method == 'POST':
         houses_data = JSONParser().parse(request)

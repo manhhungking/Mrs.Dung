@@ -15,5 +15,5 @@ urlpatterns = [
 
     # Leave `Home.Urls` as last the last line
     #path("", include("apps.home.urls")),
-    path(r"", include("House.urls"))
+    path(r"", include("house.urls"))
 ]
