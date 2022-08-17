@@ -50,7 +50,7 @@ class Register extends Component {
         if (!this.state.passwordConfirm) {
             passwordConfirmError = "Password field is required";
         }
-        if (this.state.agreeService == 0) {
+        if (this.state.agreeService === 0) {
             agreeServiceError = "Please check this box";
         }
         console.log(typeof (this.state.agreeService));
