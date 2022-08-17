@@ -137,6 +137,7 @@ $ pip3 install -r requirements.txt
 ```bash
 $ python manage.py makemigrations
 $ python manage.py migrate
+$ python import-data.py
 ```
 
 <br />
