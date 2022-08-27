@@ -3,12 +3,14 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 # Create your views here.
 
 from house.models import Houses
 from house.serializers import HouseSerializer
 
 import os
+import psycopg2
 
 @csrf_exempt
 def houseApi(request):
@@ -47,3 +49,14 @@ def houseApi(request):
             houses_serializer.save()
             return JsonResponse("Added successfully", safe=False)
         return JsonResponse("Failed to add", safe=False)
+@csrf_exempt
+def delete_house(request, id):
+    if request.method == "POST":
+        if id is not None and id != "": 
+            print(id) 
+            houses = Houses.objects.filter(house_id = id)
+            if houses:
+                houses.delete()    
+            else: 
+                return HttpResponse(status = 404)
+            return HttpResponse(status = 200)
