@@ -54,6 +54,24 @@ def delete_house(request, id):
     if request.method == "POST":
         if id is not None and id != "": 
             print(id) 
+            connection = psycopg2.connect(
+                host="129.146.248.20",
+                port="5432", #default
+                database="ttndung",
+                user="tdung",
+                password="8M44Ck48wn3J")
+
+            cursor = connection.cursor()
+            delete_record_ancu = 'DELETE FROM app_ancu_scraper a WHERE a.id = '+ str(id)
+            delete_record_dangbannhadat = 'DELETE FROM app_dangbannhadat_scraper a WHERE a.id ='+ str(id)
+            delete_record_nhadat24h = 'DELETE FROM app_nhadat24h_scraper WHERE id ='+ str(id)
+            delete_record_muaban = 'DELETE FROM app_muabannet_scraper WHERE id =' + str(id)
+            cursor.execute(delete_record_ancu)
+            cursor.execute(delete_record_dangbannhadat)
+            cursor.execute(delete_record_nhadat24h)
+            cursor.execute(delete_record_muaban)
+            connection.commit()
+            connection.close()
             houses = Houses.objects.filter(house_id = id)
             if houses:
                 houses.delete()    
